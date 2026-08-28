@@ -1,4 +1,8 @@
 {
-  "checkedIds": [],
-  "updatedAt": null
+  "checkedIds": [
+    1,
+    5,
+    32
+  ],
+  "updatedAt": "2026-08-28T11:31:22.196Z"
 }
