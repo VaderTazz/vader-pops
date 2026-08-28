@@ -95,6 +95,7 @@
   }
   .thumb-btn img { max-width: 90%; max-height: 90%; object-fit: contain; }
   .thumb-btn.no-photo { color: #ccc; font-size: 9px; text-align: center; line-height: 1.2; }
+  .checklist input[type="checkbox"]:disabled { opacity: 0.35; }
 
   /* Image grids: 3 across */
   .grid3 {
@@ -413,9 +414,16 @@ let saveQueue = Promise.resolve(); // serializes writes so rapid taps don't coll
 
 async function loadCheckedSetFromGitHub() {
   try {
-    const res = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_STATE_PATH}?t=${Date.now()}`);
+    // Use the API (not raw.githubusercontent.com) since the CDN in front of raw
+    // content can lag behind recent writes by several minutes, which made
+    // freshly-checked items appear to revert on refresh.
+    const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_STATE_PATH}`, {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    });
     if (!res.ok) return new Set();
-    const data = await res.json();
+    const meta = await res.json();
+    const decoded = decodeURIComponent(escape(atob(meta.content)));
+    const data = JSON.parse(decoded);
     return new Set((data.checkedIds || []).map(Number));
   } catch {
     return new Set();
@@ -494,16 +502,24 @@ hideToggleBtn.addEventListener('click', () => {
   applyHideOwnedToAllRows();
 });
 
-// Load saved checks from GitHub on startup, then apply them
+// Load saved checks from GitHub on startup, then apply them.
+// Checkboxes are disabled until this completes so an early tap can never
+// save an incomplete/empty set over your real saved data.
+let initialLoadComplete = false;
+document.querySelectorAll('#checklistList input[type="checkbox"]').forEach((cb) => { cb.disabled = true; });
+
 loadCheckedSetFromGitHub().then((loadedSet) => {
   checkedSet = loadedSet;
   checkedSet.forEach((id) => applyChecked(id, true));
   updateRunningTotal();
+  initialLoadComplete = true;
+  document.querySelectorAll('#checklistList input[type="checkbox"]').forEach((cb) => { cb.disabled = false; });
 });
 
 // Listen for checkbox toggles (event delegation on the checklist)
 checklistList.addEventListener('change', (e) => {
   if (e.target.matches('input[type="checkbox"]')) {
+    if (!initialLoadComplete) { e.preventDefault(); return; } // safety net, shouldn't fire since disabled
     const idx = parseInt(e.target.dataset.idx, 10);
     const checked = e.target.checked;
     applyChecked(idx, checked);
