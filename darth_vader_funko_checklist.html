@@ -26,6 +26,12 @@
   }
   .top-bar h1 { font-size: 17px; margin: 0 0 2px 0; }
   .top-bar .sub { font-size: 11.5px; color: #aaa; }
+  .running-total {
+    font-size: 14px; font-weight: 700; color: #7fffb0;
+    margin-top: 6px; padding: 6px 10px; background: rgba(127,255,176,0.1);
+    border-radius: 8px; display: inline-block;
+  }
+  .running-total .count-note { font-size: 10px; color: #999; font-weight: 400; margin-left: 6px; }
   .tabs {
     display: flex; gap: 6px; margin-top: 10px;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
@@ -147,6 +153,7 @@
 <div class="top-bar">
   <h1>Darth Vader Funko Pop!</h1>
   <div class="sub" id="topSub">Loading…</div>
+  <div class="running-total" id="runningTotal">Owned value: $0.00</div>
   <div class="tabs">
     <a href="#checklist" class="tab">✓ Checklist</a>
     <a href="#figures" class="tab">🧍 Figures</a>
@@ -430,10 +437,24 @@ function applyChecked(idx, checked) {
   });
 }
 
+function updateRunningTotal() {
+  const ownedItems = items.filter((it) => checkedSet.has(it.id));
+  const withValue = ownedItems.filter((it) => it.value);
+  const total = withValue.reduce((sum, it) => sum + parseFloat(it.value.replace('$', '')), 0);
+  const missingCount = ownedItems.length - withValue.length;
+  const totalEl = document.getElementById('runningTotal');
+  let html = `Owned value: $${total.toFixed(2)} <span class="count-note">(${ownedItems.length} owned)</span>`;
+  if (missingCount > 0) {
+    html += `<span class="count-note"> — ${missingCount} owned item${missingCount > 1 ? 's' : ''} missing a value</span>`;
+  }
+  totalEl.innerHTML = html;
+}
+
 // Load saved checks from GitHub on startup, then apply them
 loadCheckedSetFromGitHub().then((loadedSet) => {
   checkedSet = loadedSet;
   checkedSet.forEach((id) => applyChecked(id, true));
+  updateRunningTotal();
 });
 
 // Listen for checkbox toggles (event delegation on the checklist)
@@ -444,6 +465,7 @@ checklistList.addEventListener('change', (e) => {
     applyChecked(idx, checked);
     if (checked) checkedSet.add(idx); else checkedSet.delete(idx);
     saveCheckedSetToGitHub(checkedSet);
+    updateRunningTotal();
   }
 });
 
