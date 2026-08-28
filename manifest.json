@@ -1,0 +1,24 @@
+{
+  "name": "Darth Vader Funko Pop! Checklist",
+  "short_name": "Vader Pops",
+  "description": "Checklist and photo reference for every Darth Vader Funko Pop figure",
+  "start_url": "./darth_vader_funko_checklist.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f4f4",
+  "theme_color": "#14141a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
