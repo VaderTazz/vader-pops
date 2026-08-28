@@ -184,6 +184,7 @@
 const items = [
   {num:"1", name:"Darth Vader (Chrome)", theme:"Hot Topic Exclusive", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader-chrome.jpg", boxImg:"https://i.ebayimg.com/images/g/nQ0AAOSwi-1k1XyA/s-l1600.jpg"},
   {num:"1", name:"Darth Vader", theme:"Series 1 (Blue Box)", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/RSMAAOSwwpVjPW~~/s-l1600.jpg"},
+  {num:"01C", name:"Darth Vader", theme:"Pop! Classics — From the Vault, LE 10,000", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw7e2f07e0/images/funko/upload/77432_StarWars_DarthVader_Vault_POP_GLAM-1-WEB.png?sw=800&sh=800"},
   {num:"2", name:"Darth Vader — Pop! Die-Cast", theme:"Funko Shop Exclusive", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwbd56b99e/images/funko/63218-1.png?sw=800&sh=800"},
   {num:"2", name:"Darth Vader (Chase) — Pop! Die-Cast", theme:"Funko Shop Exclusive, Silver Chase", override:"https://www.undiscoveredrealm.com/cdn/shop/products/star-wars-darth-vader-silver-metallic-chase-die-cast-exclusive-funko-pop-02-funko-968169_1024x1024.webp?v=1688469232"},
   {num:"20", name:"Darth Vader on TIE Fighter", theme:"Disney 100 — Amazon Exclusive", img:"20-funko-pop-figure-disney-100-darh-vader-on-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/EJMAAOSwdBRk54df/s-l1600.jpg"},
@@ -200,6 +201,8 @@ const items = [
   {num:"157", name:"Darth Vader (Gold Chrome)", theme:"Return of the Jedi — 2019 Galactic Convention Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-gold.jpg", boxImg:"https://i.ebayimg.com/images/g/URAAAOSwI4teSX1n/s-l1600.jpg"},
   {num:"158", name:"Darth Vader (Bespin)", theme:"Star Wars — Smuggler's Bounty Exclusive", override:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg", boxImg:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg"},
   {num:"176", name:"Darth Vader in TIE Fighter", theme:"Force Awakens — Target Exclusive", img:"176-funko-pop-figure-star-wars-episode-vii-the-force-awakens-darth-vader-in-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/a-oAAOSwSP5k0nDH/s-l1600.jpg"},
+  {num:"225", name:"Death Star Duel (Darth Vader & Obi-Wan Kenobi)", theme:"Movie Moments — Walmart Exclusive", override:"https://pops.today/images/POP_STAR_WARS/Star+Wars+225.webp", boxImg:"https://pops.today/images/POP_STAR_WARS/Star+Wars+225+Box.webp"},
+  {num:"226", name:"Cloud City Duel (Darth Vader & Luke Skywalker)", theme:"Movie Moments — Walgreens Exclusive", override:"https://pops.today/images/POP_STAR_WARS/Star+Wars+226.webp", boxImg:"https://pops.today/images/POP_STAR_WARS/Star+Wars+226+Box.webp"},
   {num:"279", name:"Darth Vader w/ Candy Cane (Chase)", theme:"Holiday — Walgreens Exclusive", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane-chase-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/r68AAOSw25VnQfff/s-l1600.jpg"},
   {num:"279", name:"Darth Vader w/ Candy Cane", theme:"Holiday", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane.jpg", boxImg:"https://i.ebayimg.com/images/g/kUUAAOSwyz5nUJRD/s-l1600.png"},
   {num:"288", name:"Darth Vader Electrocuted", theme:"Return of the Jedi — Target Exclusive", img:"288-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-electrocuted-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/znEAAOSwf-dg~dgT/s-l1600.jpg"},
@@ -225,13 +228,17 @@ const items = [
   {num:"543", name:"Darth Vader", theme:"Obi-Wan Kenobi — GameStop Exclusive", img:"543-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/TsUAAeSwjiVqEzDj/s-l1600.jpg"},
   {num:"556", name:"Darth Vader Snowman", theme:"Holiday", img:"556-funko-pop-figure-star-wars-holiday-darth-vader-snowman.jpg"},
   {num:"569", name:"Darth Vader (Supersized 18\")", theme:"Empire Strikes Back — Funko Shop Exclusive", img:"569-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-supersized-18-.jpg"},
-  {num:"574", name:"Darth Vader (Lights & Sound, 10\")", theme:"Rise of Skywalker — Funko Shop Exclusive", img:"574-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
+  {num:"574", name:"Darth Vader (Lights & Sound, 10\")", theme:"From the Vault — Funko Shop Exclusive", img:"574-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
   {num:"597", name:"Darth Vader", theme:"A New Hope", img:"597-funko-pop-figure-star-wars-episode-iv-new-hope-darth-vader.jpg"},
   {num:"600", name:"Darth Vader (Facet)", theme:"Disney 100 — Funko Shop Exclusive", img:"600-funko-pop-figure-disney-100-darth-vader-facet.jpg"},
   {num:"610", name:"Darth Vader Unmasked", theme:"Return of the Jedi (40th)", img:"610-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-unmasked.jpg"},
   {num:"637", name:"Darth Vader with Damaged Helmet", theme:"Obi-Wan Kenobi — Walmart Exclusive", img:"637-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader-with-damaged-helmet.jpg"},
+  {num:"710", name:"Darth Vader (Hallway Rampage)", theme:"Rogue One — 2024 Summer Convention/SDCC Shared Exclusive", override:"https://i.ebayimg.com/images/g/5UUAAeSwsXNqRXJP/s-l1600.jpg"},
+  {num:"727", name:"Darth Vader (Halloween Light-Up)", theme:"Halloween — Super Sized 6.85\"", override:"https://funko.com/on/demandware.static/-/Sites-funko-master-catalog/default/dw2c102ec6/images/funko/upload/79918_StarWars_VaderSFX_POP-SUPER_GLAM-WEB.png"},
   {num:"775", name:"Darth Vader (Samurai)", theme:"Star Wars Impressions — Funko Exclusive", img:"775-funko-pop-figure-star-wars-artist-series-darth-vader-samurai.jpg"},
-  {num:"795", name:"Darth Vader (Lights & Sound)", theme:"Retro Series — Web Exclusive, Sept 2025", img:"795-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"}
+  {num:"795", name:"Darth Vader (Lights & Sound)", theme:"Retro Series — Web Exclusive, Sept 2025", img:"795-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
+  {num:"836", name:"Darth Vader (Infinities)", theme:"Star Wars Legends — Retailer Exclusive, White Armor", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwddbc3979/images/funko/upload/1/90873_POP_SW_Legends_Darth-Vader(WH)_GLAM-WEB.png?sw=800&sh=800"},
+  {num:"N/A", name:"Darth Vader & Luke Skywalker (Metallic 2-Pack)", theme:"D23 2024 Expo Exclusive — no assigned box number", override:"https://i.ebayimg.com/images/g/jYoAAOSwtIlnPKQ1/s-l1600.jpg"}
 ];
 
 const IMG_BASE = "https://wsrv.nl/?url=pop-figures.com/media/img/figurine/";
