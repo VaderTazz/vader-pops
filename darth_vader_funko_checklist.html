@@ -167,7 +167,7 @@
     <a href="#checklist" class="tab">✓ Checklist</a>
     <a href="#figures" class="tab">🧍 Figures</a>
     <a href="#boxes" class="tab">📦 Boxes</a>
-    <button id="toggleHideOwned" class="hide-toggle-btn">Hide owned</button>
+    <button id="toggleHideOwned" class="hide-toggle-btn">Hide</button>
   </div>
 </div>
 
@@ -481,7 +481,7 @@ function applyHideOwnedToAllRows() {
 
 const hideToggleBtn = document.getElementById('toggleHideOwned');
 function refreshHideToggleButton() {
-  hideToggleBtn.textContent = hideOwned ? 'Show owned' : 'Hide owned';
+  hideToggleBtn.textContent = hideOwned ? 'Show' : 'Hide';
   hideToggleBtn.classList.toggle('active', hideOwned);
 }
 refreshHideToggleButton();
