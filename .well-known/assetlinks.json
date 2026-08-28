@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.vadertazz.twa",
+        "sha256_cert_fingerprints": ["7E:13:84:FE:5A:BF:F2:90:D1:02:78:DF:15:6D:CF:BA:51:68:26:D1:09:3A:F4:C9:5F:62:C2:4D:9D:73:45:54"]
+      }
+    }]
