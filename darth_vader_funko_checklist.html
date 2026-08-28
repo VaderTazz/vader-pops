@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14141a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Darth Vader Funko Pop! Checklist</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    color: #1a1a1a;
+  }
+  .top-bar {
+    position: sticky; top: 0; z-index: 10;
+    background: #14141a; color: #fff;
+    padding: 14px 16px 12px;
+  }
+  .top-bar h1 { font-size: 17px; margin: 0 0 2px 0; }
+  .top-bar .sub { font-size: 11.5px; color: #aaa; }
+  .tabs {
+    display: flex; gap: 6px; margin-top: 10px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .tab {
+    flex: 0 0 auto; padding: 7px 12px; border-radius: 20px;
+    background: #2a2a34; color: #ddd; font-size: 12.5px; font-weight: 600;
+    white-space: nowrap; text-decoration: none;
+  }
+
+  section { padding: 14px 12px 6px; scroll-margin-top: 92px; }
+  section h2 {
+    font-size: 15px; margin: 4px 2px 10px; color: #14141a;
+    display: flex; align-items: center; gap: 6px;
+  }
+  section .count { font-size: 11px; color: #999; font-weight: 400; }
+
+  /* Checklist with right-side thumbnail */
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; border-radius: 10px;
+    padding: 8px 10px; margin-bottom: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .checklist input[type="checkbox"] {
+    width: 20px; height: 20px; flex: 0 0 auto; accent-color: #c0392b;
+  }
+  .li-text { flex: 1; min-width: 0; }
+  .seq { color: #bbb; font-size: 11px; margin-right: 4px; }
+  .popnum { font-weight: 700; color: #c0392b; font-size: 13.5px; }
+  .popname { font-size: 13.5px; color: #222; display: block; margin-top: 1px; }
+  .poptheme { font-size: 11.5px; color: #999; font-style: italic; display: block; margin-top: 1px; }
+  .glow-tag {
+    display: inline-block; background: #1fae6b; color: #fff;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.3px;
+    padding: 1px 6px; border-radius: 8px; margin-left: 5px;
+    vertical-align: middle;
+  }
+  .badge .glow-tag { margin-left: 3px; padding: 1px 4px; font-size: 8px; }
+
+  .thumb-btn {
+    position: relative;
+    flex: 0 0 auto; width: 52px; height: 52px; border-radius: 8px;
+    background: #f6f6f6; border: 1px solid #eaeaea;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; padding: 0; cursor: pointer;
+  }
+  .thumb-btn img { max-width: 90%; max-height: 90%; object-fit: contain; }
+  .thumb-btn.no-photo { color: #ccc; font-size: 9px; text-align: center; line-height: 1.2; }
+
+  /* Image grids: 3 across */
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+  .card {
+    position: relative; aspect-ratio: 1 / 1;
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; cursor: pointer; padding: 0;
+  }
+  .card img { max-width: 90%; max-height: 88%; object-fit: contain; }
+  .badge {
+    position: absolute; top: 3px; left: 3px;
+    background: rgba(20,20,20,0.82); color: #fff;
+    font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 5px; line-height: 1.3;
+  }
+  .badge .pop { color: #ff6b5e; margin-left: 3px; }
+  .placeholder-text {
+    text-align: center; color: #aaa; font-size: 9.5px; padding: 4px; line-height: 1.3;
+  }
+  .no-photo { background: #f0f0f0; }
+  .cross-overlay {
+    display: none;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 5; pointer-events: none;
+  }
+  .checked .cross-overlay { display: block; }
+  .checked img { opacity: 0.55; }
+
+  footer { padding: 20px 16px 40px; font-size: 11px; color: #999; text-align: center; }
+
+  @media (min-width: 640px) {
+    .grid3 { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* Lightbox */
+  #lightbox {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.9);
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox .box {
+    max-width: 92vw; max-height: 88vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  #lightbox img { max-width: 92vw; max-height: 72vh; object-fit: contain; border-radius: 8px; background: #fff; }
+  #lightbox .caption { color: #fff; text-align: center; margin-top: 14px; font-size: 14px; }
+  #lightbox .caption .pn { color: #ff6b5e; font-weight: 700; margin-right: 6px; }
+  #lightbox .close-btn {
+    position: absolute; top: 16px; right: 16px;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); color: #fff; border: none;
+    font-size: 20px; line-height: 1; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>Darth Vader Funko Pop!</h1>
+  <div class="sub" id="topSub">Loading…</div>
+  <div class="tabs">
+    <a href="#checklist" class="tab">✓ Checklist</a>
+    <a href="#figures" class="tab">🧍 Figures</a>
+    <a href="#boxes" class="tab">📦 Boxes</a>
+  </div>
+</div>
+
+<section id="checklist">
+  <h2>Checklist <span class="count" id="checklistCount"></span></h2>
+  <ul class="checklist" id="checklistList"></ul>
+</section>
+
+<section id="figures">
+  <h2>Figure Photos <span class="count" id="figuresCount"></span></h2>
+  <div class="grid3" id="figuresGrid"></div>
+</section>
+
+<section id="boxes">
+  <h2>Box Photos <span class="count" id="boxesCount"></span></h2>
+  <div class="grid3" id="boxesGrid"></div>
+</section>
+
+<footer>
+  Numbers cross-checked against Funko.com "Box Number" data and independent listings.<br>
+  Box photos are a work in progress — items without one show "not yet sourced."<br>
+  Tap any thumbnail to view it larger.
+</footer>
+
+<div id="lightbox">
+  <button class="close-btn" id="lightboxClose">✕</button>
+  <div class="box">
+    <img id="lightboxImg" src="" alt="">
+    <div class="caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<script>
+const items = [
+  {num:"1", name:"Darth Vader (Chrome)", theme:"Hot Topic Exclusive", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader-chrome.jpg", boxImg:"https://i.ebayimg.com/images/g/nQ0AAOSwi-1k1XyA/s-l1600.jpg"},
+  {num:"1", name:"Darth Vader", theme:"Series 1 (Blue Box)", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/RSMAAOSwwpVjPW~~/s-l1600.jpg"},
+  {num:"2", name:"Darth Vader — Pop! Die-Cast", theme:"Funko Shop Exclusive", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwbd56b99e/images/funko/63218-1.png?sw=800&sh=800"},
+  {num:"2", name:"Darth Vader (Chase) — Pop! Die-Cast", theme:"Funko Shop Exclusive, Silver Chase", override:"https://www.undiscoveredrealm.com/cdn/shop/products/star-wars-darth-vader-silver-metallic-chase-die-cast-exclusive-funko-pop-02-funko-968169_1024x1024.webp?v=1688469232"},
+  {num:"20", name:"Darth Vader on TIE Fighter", theme:"Disney 100 — Amazon Exclusive", img:"20-funko-pop-figure-disney-100-darh-vader-on-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/EJMAAOSwdBRk54df/s-l1600.jpg"},
+  {num:"33", name:"Holographic Darth Vader", theme:"Phantom Menace — Convention Exclusive", img:"33-funko-pop-figure-star-wars-episode-i-the-phantom-menace-holographic-darth-vader-glow-in-the-dark.jpg", glow:true},
+  {num:"33", name:"Holographic Darth Vader", theme:"Phantom Menace", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw5783ee97/images/funko/3726-1_C.jpeg?sw=800&sh=800"},
+  {num:"43", name:"Unmasked Darth Vader", theme:"Star Wars Series 1 — Star Wars Celebration Exclusive", img:"43-funko-pop-figure-star-wars-episode-i-the-phantom-menace-unmasked-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/4BIAAOSwbf5hEwI6/s-l1600.jpg"},
+  {num:"143", name:"Darth Vader", theme:"Rogue One", img:"143-funko-pop-figure-rogue-one-a-star-wars-story-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/L8QAAOSw6Xlj1Y5z/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader Force Choke", theme:"Rogue One — GameStop Exclusive", img:"157-funko-pop-figure-rogue-one-a-star-wars-story-darth-vader-force-choke.jpg", boxImg:"https://i.ebayimg.com/images/g/fn0AAOSw66Fmlxl6/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Gold)", theme:"Gold Set — Walmart Exclusive", img:"157-funko-pop-figure-star-wars-gold-set-darth-vader-gold.jpg", boxImg:"https://i.ebayimg.com/images/g/Sl4AAOSwAxtjJVJ6/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Futura)", theme:"Star Wars Futura — Target Exclusive", img:"157-funko-pop-figure-star-wars-futura-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/YhMAAeSwAHVobHli/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Black Chrome)", theme:"Return of the Jedi — Smuggler's Bounty Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-black.jpg", boxImg:"https://i.ebayimg.com/images/g/6UkAAeSwCr9qHPwR/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Red Chrome)", theme:"Return of the Jedi — Target Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-red.jpg", boxImg:"https://i.ebayimg.com/images/g/1qAAAOSwJmhmbhsB/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Blue Chrome)", theme:"Return of the Jedi — 2019 Star Wars Celebration Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-blue.jpg", boxImg:"https://i.ebayimg.com/images/g/VqoAAOSwTi9ieuXm/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Gold Chrome)", theme:"Return of the Jedi — 2019 Galactic Convention Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-gold.jpg", boxImg:"https://i.ebayimg.com/images/g/URAAAOSwI4teSX1n/s-l1600.jpg"},
+  {num:"158", name:"Darth Vader (Bespin)", theme:"Star Wars — Smuggler's Bounty Exclusive", override:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg", boxImg:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg"},
+  {num:"176", name:"Darth Vader in TIE Fighter", theme:"Force Awakens — Target Exclusive", img:"176-funko-pop-figure-star-wars-episode-vii-the-force-awakens-darth-vader-in-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/a-oAAOSwSP5k0nDH/s-l1600.jpg"},
+  {num:"279", name:"Darth Vader w/ Candy Cane (Chase)", theme:"Holiday — Walgreens Exclusive", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane-chase-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/r68AAOSw25VnQfff/s-l1600.jpg"},
+  {num:"279", name:"Darth Vader w/ Candy Cane", theme:"Holiday", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane.jpg", boxImg:"https://i.ebayimg.com/images/g/kUUAAOSwyz5nUJRD/s-l1600.png"},
+  {num:"288", name:"Darth Vader Electrocuted", theme:"Return of the Jedi — Target Exclusive", img:"288-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-electrocuted-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/znEAAOSwf-dg~dgT/s-l1600.jpg"},
+  {num:"288", name:"Darth Vader Electrocuted", theme:"Return of the Jedi", img:"288-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-electrocuted.jpg", boxImg:"https://i.ebayimg.com/images/g/XOwAAOSwF-tgRaqH/s-l1600.jpg"},
+  {num:"343", name:"Darth Vader (Lights & Sound)", theme:"From the Vault", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw4e2ecc85/images/funko/35519-1.png?sw=800&sh=800", boxImg:"https://i.ebayimg.com/images/g/-vwAAOSw~55k5N4u/s-l1600.jpg"},
+  {num:"365", name:"Darth Vader in Meditation Chamber", theme:"Empire Strikes Back", img:"365-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-in-meditation-chamber.jpg", boxImg:"https://i.ebayimg.com/images/g/MC4AAOSwWoNlYP-w/s-l1600.jpg"},
+  {num:"377", name:"Darth Vader & Snowtrooper", theme:"Battle at Echo Base — Amazon Exclusive", img:"377-funko-pop-figure-star-wars-battle-at-echo-base-darth-vader-snowtrooper.jpg", boxImg:"https://i.ebayimg.com/images/g/GlsAAOSwQk5m8dFi/s-l1600.png"},
+  {num:"389", name:"Darth Vader", theme:"Concept Series — Galactic Convention Exclusive", img:"389-funko-pop-figure-star-wars-concept-series-darth%20vader.jpg", boxImg:"https://i.ebayimg.com/images/g/OqUAAOSwBORlT7vI/s-l1600.jpg"},
+  {num:"417", name:"Darth Vader (Pink)", theme:"Valentine's Day", img:"417-funko-pop-figure-star-wars-valentine-s-day-darth-vader-pink.jpg", boxImg:"https://i.ebayimg.com/images/g/CqgAAOSwPilh4ORS/s-l1600.jpg"},
+  {num:"426", name:"Darth Vader", theme:"Concept Series — Disney Exclusive", img:"426-funko-pop-figure-star-wars-concept-series-darth%20vader.jpg", boxImg:"https://i.ebayimg.com/images/g/ZfgAAOSwymhgRX3q/s-l1600.jpg"},
+  {num:"428", name:"Darth Vader (Fist Pose)", theme:"Empire Strikes Back — FunkoShop / Popcultcha Exclusive", img:"428-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/LPkAAeSwunVqQTvg/s-l1600.jpg"},
+  {num:"442", name:"Darth Vader", theme:"Bounty Hunters — GameStop Exclusive", img:"442-funko-pop-figure-star-wars-bounty-hunters-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/Kx0AAeSwFatqOY8Z/s-l1600.jpg"},
+  {num:"456", name:"Darth Vader", theme:"Retro Series — Target Exclusive", img:"456-funko-pop-figure-star-wars-retro-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/R9oAAOSwcqBj-8XV/s-l1600.jpg"},
+  {num:"509", name:"Darth Vader", theme:"Phantom Menace — 2022 Star Wars Celebration Exclusive", img:"509-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/LJEAAOSw7jJnlX0z/s-l1600.jpg"},
+  {num:"515", name:"Darth Vader (Mustafar)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-lava.jpg", boxImg:"https://i.ebayimg.com/images/g/nosAAOSwuQVkfgno/s-l1600.jpg"},
+  {num:"516", name:"Darth Vader (Hoth)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-ice.jpg", boxImg:"https://i.ebayimg.com/images/g/kf0AAOSwWR5i980D/s-l1600.jpg"},
+  {num:"517", name:"Darth Vader (Endor)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-wood.jpg", boxImg:"https://i.ebayimg.com/images/g/WtAAAOSwwdtmtk-N/s-l1600.jpg"},
+  {num:"518", name:"Darth Vader (Bespin)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-rays.jpg", boxImg:"https://i.ebayimg.com/images/g/X~kAAOSwaphnNDgb/s-l1600.png"},
+  {num:"523", name:"Red Saber Series Vol.1: Darth Vader", theme:"Revenge of the Sith — GameStop Exclusive", img:"523-funko-pop-figure-star-wars-episode-iii-revenge-of-the-sith-red-saber-series-volume-1-darth-vader-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/7BkAAOSwCzZkGJ7u/s-l1600.jpg"},
+  {num:"524", name:"Darth Vader", theme:"Concept Series — 2022 Star Wars Celebration Exclusive", img:"524-funko-pop-figure-star-wars-concept-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/5PAAAOSwOWZmMW3C/s-l1600.jpg"},
+  {num:"535", name:"Darth Vader", theme:"Artist Series — Target Exclusive", img:"535-funko-pop-figure-star-wars-artist-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/wKAAAOSwRXpni9tS/s-l1600.png"},
+  {num:"539", name:"Darth Vader", theme:"Obi-Wan Kenobi", img:"539-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/lxgAAeSwN6posx-O/s-l1600.jpg"},
+  {num:"543", name:"Darth Vader", theme:"Obi-Wan Kenobi — GameStop Exclusive", img:"543-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/TsUAAeSwjiVqEzDj/s-l1600.jpg"},
+  {num:"556", name:"Darth Vader Snowman", theme:"Holiday", img:"556-funko-pop-figure-star-wars-holiday-darth-vader-snowman.jpg"},
+  {num:"569", name:"Darth Vader (Supersized 18\")", theme:"Empire Strikes Back — Funko Shop Exclusive", img:"569-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-supersized-18-.jpg"},
+  {num:"574", name:"Darth Vader (Lights & Sound, 10\")", theme:"Rise of Skywalker — Funko Shop Exclusive", img:"574-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
+  {num:"597", name:"Darth Vader", theme:"A New Hope", img:"597-funko-pop-figure-star-wars-episode-iv-new-hope-darth-vader.jpg"},
+  {num:"600", name:"Darth Vader (Facet)", theme:"Disney 100 — Funko Shop Exclusive", img:"600-funko-pop-figure-disney-100-darth-vader-facet.jpg"},
+  {num:"610", name:"Darth Vader Unmasked", theme:"Return of the Jedi (40th)", img:"610-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-unmasked.jpg"},
+  {num:"637", name:"Darth Vader with Damaged Helmet", theme:"Obi-Wan Kenobi — Walmart Exclusive", img:"637-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader-with-damaged-helmet.jpg"},
+  {num:"775", name:"Darth Vader (Samurai)", theme:"Star Wars Impressions — Funko Exclusive", img:"775-funko-pop-figure-star-wars-artist-series-darth-vader-samurai.jpg"},
+  {num:"795", name:"Darth Vader (Lights & Sound)", theme:"Retro Series — Web Exclusive, Sept 2025", img:"795-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"}
+];
+
+const IMG_BASE = "https://wsrv.nl/?url=pop-figures.com/media/img/figurine/";
+
+function figureSrc(it) {
+  if (it.noPhoto) return null;
+  return it.override ? it.override : (IMG_BASE + it.img);
+}
+function hasGlow(it) {
+  return !!it.glow;
+}
+function glowTag() {
+  return '<span class="glow-tag">GLOW</span>';
+}
+
+document.getElementById('topSub').textContent = items.length + ' figures & variants, verified Pop! numbers';
+document.getElementById('checklistCount').textContent = '(' + items.length + ')';
+document.getElementById('figuresCount').textContent = '(' + items.length + ')';
+document.getElementById('boxesCount').textContent = '(' + items.filter(i => i.boxImg).length + ' of ' + items.length + ' confirmed)';
+
+// ---------- Lightbox ----------
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+
+function openLightbox(src, num, name, glow) {
+  if (!src) return;
+  lightboxImg.src = src;
+  lightboxImg.alt = name;
+  lightboxCaption.innerHTML = `<span class="pn">#${num}</span>${name}${glow ? glowTag() : ''}`;
+  lightbox.classList.add('open');
+}
+document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+// ---------- Checklist (with right-side thumbnail) ----------
+const CROSS_SVG = '<svg class="cross-overlay" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="2" y1="2" x2="98" y2="98" stroke="#e21b1b" stroke-width="6" stroke-linecap="round"/><line x1="98" y1="2" x2="2" y2="98" stroke="#e21b1b" stroke-width="6" stroke-linecap="round"/></svg>';
+
+const checklistList = document.getElementById('checklistList');
+items.forEach((it, i) => {
+  const li = document.createElement('li');
+  const src = figureSrc(it);
+
+  const thumbHtml = src
+    ? `<button class="thumb-btn" data-idx="${i}" data-src="${src}" data-num="${it.num}" data-name="${it.name.replace(/"/g,'&quot;')}" data-glow="${hasGlow(it)}">
+         <img src="${src}" alt="${it.name}" loading="lazy" onerror="this.parentElement.classList.add('no-photo'); this.style.display='none'; this.parentElement.textContent='no photo';">
+         ${CROSS_SVG}
+       </button>`
+    : `<div class="thumb-btn no-photo">no photo</div>`;
+
+  li.innerHTML = `
+    <input type="checkbox" id="chk${i}" data-idx="${i}">
+    <div class="li-text">
+      <span class="seq">${i+1}.</span><span class="popnum">#${it.num}</span>
+      <span class="popname">${it.name}${hasGlow(it) ? glowTag() : ''}</span>
+      <span class="poptheme">${it.theme}</span>
+    </div>
+    ${thumbHtml}
+  `;
+  checklistList.appendChild(li);
+});
+checklistList.addEventListener('click', (e) => {
+  const btn = e.target.closest('.thumb-btn');
+  if (btn && btn.dataset.src) {
+    openLightbox(btn.dataset.src, btn.dataset.num, btn.dataset.name, btn.dataset.glow === 'true');
+  }
+});
+
+// ---------- Figures grid ----------
+const figuresGrid = document.getElementById('figuresGrid');
+items.forEach((it, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.idx = i;
+  const src = figureSrc(it);
+  if (!src) {
+    card.classList.add('no-photo');
+    card.innerHTML = `
+      <div class="badge">${i+1}<span class="pop">#${it.num}</span></div>
+      <div class="placeholder-text">No verified<br>photo available</div>
+    `;
+  } else {
+    card.dataset.src = src;
+    card.dataset.num = it.num;
+    card.dataset.name = it.name;
+    card.dataset.glow = hasGlow(it);
+    card.innerHTML = `
+      <div class="badge">${i+1}<span class="pop">#${it.num}</span>${hasGlow(it) ? glowTag() : ''}</div>
+      <img src="${src}" alt="${it.name}" loading="lazy"
+           onerror="this.parentElement.classList.add('no-photo'); this.style.display='none';">
+      ${CROSS_SVG}
+    `;
+  }
+  figuresGrid.appendChild(card);
+});
+figuresGrid.addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card && card.dataset.src) openLightbox(card.dataset.src, card.dataset.num, card.dataset.name, card.dataset.glow === 'true');
+});
+
+// ---------- Box photos grid ----------
+const boxesGrid = document.getElementById('boxesGrid');
+items.forEach((it, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.idx = i;
+  if (it.boxImg) {
+    card.dataset.src = it.boxImg;
+    card.dataset.num = it.num;
+    card.dataset.name = it.name + ' (box)';
+    card.dataset.glow = hasGlow(it);
+    card.innerHTML = `
+      <div class="badge">${i+1}<span class="pop">#${it.num}</span>${hasGlow(it) ? glowTag() : ''}</div>
+      <img src="${it.boxImg}" alt="${it.name} box" loading="lazy"
+           onerror="this.parentElement.classList.add('no-photo'); this.style.display='none';">
+      ${CROSS_SVG}
+    `;
+  } else {
+    card.classList.add('no-photo');
+    card.innerHTML = `
+      <div class="badge">${i+1}<span class="pop">#${it.num}</span></div>
+      <div class="placeholder-text">not yet<br>sourced</div>
+    `;
+  }
+  boxesGrid.appendChild(card);
+});
+boxesGrid.addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card && card.dataset.src) openLightbox(card.dataset.src, card.dataset.num, card.dataset.name, card.dataset.glow === 'true');
+});
+
+// ---------- Checked state: toggles red cross on all matching images ----------
+const STORAGE_KEY = 'vaderPopsChecked';
+function loadCheckedSet() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+  } catch { return new Set(); }
+}
+function saveCheckedSet(set) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...set])); } catch {}
+}
+const checkedSet = loadCheckedSet();
+
+function applyChecked(idx, checked) {
+  document.querySelectorAll(`[data-idx="${idx}"]`).forEach((el) => {
+    if (el.tagName === 'INPUT') { el.checked = checked; return; }
+    el.classList.toggle('checked', checked);
+  });
+}
+
+// Apply any previously-saved checks on load
+items.forEach((_, i) => { if (checkedSet.has(i)) applyChecked(i, true); });
+
+// Listen for checkbox toggles (event delegation on the checklist)
+checklistList.addEventListener('change', (e) => {
+  if (e.target.matches('input[type="checkbox"]')) {
+    const idx = parseInt(e.target.dataset.idx, 10);
+    const checked = e.target.checked;
+    applyChecked(idx, checked);
+    if (checked) checkedSet.add(idx); else checkedSet.delete(idx);
+    saveCheckedSet(checkedSet);
+  }
+});
+
+// Register service worker for offline/PWA support (only works when hosted over https)
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+
+</body>
+</html>
