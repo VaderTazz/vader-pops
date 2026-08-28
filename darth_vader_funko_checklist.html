@@ -57,6 +57,7 @@
   }
   .hide-toggle-btn.active { background: #c0392b; color: #fff; }
   .checklist li.hide-when-owned { display: none; }
+  .card.hide-when-owned { display: none; }
 
   /* Checklist with right-side thumbnail */
   .checklist { list-style: none; margin: 0; padding: 0; }
@@ -469,10 +470,11 @@ let hideOwned = false;
 try { hideOwned = localStorage.getItem('vaderPopsHideOwned') === 'true'; } catch {}
 
 function updateRowVisibility(idx) {
-  const row = checklistList.querySelector(`li[data-idx="${idx}"]`);
-  if (!row) return;
   const isChecked = checkedSet.has(idx);
-  row.classList.toggle('hide-when-owned', hideOwned && isChecked);
+  const shouldHide = hideOwned && isChecked;
+  document.querySelectorAll(`li[data-idx="${idx}"], .card[data-idx="${idx}"]`).forEach((el) => {
+    el.classList.toggle('hide-when-owned', shouldHide);
+  });
 }
 
 function applyHideOwnedToAllRows() {
