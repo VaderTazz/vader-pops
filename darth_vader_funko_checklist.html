@@ -59,6 +59,8 @@
   .popnum { font-weight: 700; color: #c0392b; font-size: 13.5px; }
   .popname { font-size: 13.5px; color: #222; display: block; margin-top: 1px; }
   .poptheme { font-size: 11.5px; color: #999; font-style: italic; display: block; margin-top: 1px; }
+  .popvalue { font-size: 11.5px; color: #2a7f2a; font-weight: 700; display: block; margin-top: 1px; }
+  .badge .val { color: #7fffb0; margin-left: 3px; }
   .glow-tag {
     display: inline-block; background: #1fae6b; color: #fff;
     font-size: 9px; font-weight: 700; letter-spacing: 0.3px;
@@ -182,13 +184,13 @@
 
 <script>
 const items = [
-  {num:"1", name:"Darth Vader (Chrome)", theme:"Hot Topic Exclusive", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader-chrome.jpg", boxImg:"https://i.ebayimg.com/images/g/nQ0AAOSwi-1k1XyA/s-l1600.jpg"},
-  {num:"1", name:"Darth Vader", theme:"Series 1 (Blue Box)", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/RSMAAOSwwpVjPW~~/s-l1600.jpg"},
+  {num:"1", name:"Darth Vader (Chrome)", theme:"Hot Topic Exclusive", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader-chrome.jpg", boxImg:"https://i.ebayimg.com/images/g/nQ0AAOSwi-1k1XyA/s-l1600.jpg", value:"$35.88"},
+  {num:"1", name:"Darth Vader", theme:"Series 1 (Blue Box)", img:"1-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/RSMAAOSwwpVjPW~~/s-l1600.jpg", value:"$13.77"},
   {num:"01C", name:"Darth Vader", theme:"Pop! Classics — From the Vault, LE 10,000", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw7e2f07e0/images/funko/upload/77432_StarWars_DarthVader_Vault_POP_GLAM-1-WEB.png?sw=800&sh=800"},
-  {num:"2", name:"Darth Vader — Pop! Die-Cast", theme:"Funko Shop Exclusive", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwbd56b99e/images/funko/63218-1.png?sw=800&sh=800"},
+  {num:"2", name:"Darth Vader — Pop! Die-Cast", theme:"Funko Shop Exclusive", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwbd56b99e/images/funko/63218-1.png?sw=800&sh=800", value:"$34.92"},
   {num:"2", name:"Darth Vader (Chase) — Pop! Die-Cast", theme:"Funko Shop Exclusive, Silver Chase", override:"https://www.undiscoveredrealm.com/cdn/shop/products/star-wars-darth-vader-silver-metallic-chase-die-cast-exclusive-funko-pop-02-funko-968169_1024x1024.webp?v=1688469232"},
   {num:"20", name:"Darth Vader on TIE Fighter", theme:"Disney 100 — Amazon Exclusive", img:"20-funko-pop-figure-disney-100-darh-vader-on-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/EJMAAOSwdBRk54df/s-l1600.jpg"},
-  {num:"33", name:"Holographic Darth Vader", theme:"Phantom Menace — Convention Exclusive", img:"33-funko-pop-figure-star-wars-episode-i-the-phantom-menace-holographic-darth-vader-glow-in-the-dark.jpg", glow:true},
+  {num:"33", name:"Holographic Darth Vader (Glow in the Dark)", theme:"Phantom Menace — Convention Exclusive", img:"33-funko-pop-figure-star-wars-episode-i-the-phantom-menace-holographic-darth-vader-glow-in-the-dark.jpg", glow:true, value:"$405.62"},
   {num:"33", name:"Holographic Darth Vader", theme:"Phantom Menace", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw5783ee97/images/funko/3726-1_C.jpeg?sw=800&sh=800"},
   {num:"43", name:"Unmasked Darth Vader", theme:"Star Wars Series 1 — Star Wars Celebration Exclusive", img:"43-funko-pop-figure-star-wars-episode-i-the-phantom-menace-unmasked-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/4BIAAOSwbf5hEwI6/s-l1600.jpg"},
   {num:"143", name:"Darth Vader", theme:"Rogue One", img:"143-funko-pop-figure-rogue-one-a-star-wars-story-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/L8QAAOSw6Xlj1Y5z/s-l1600.jpg"},
@@ -198,48 +200,48 @@ const items = [
   {num:"157", name:"Darth Vader (Black Chrome)", theme:"Return of the Jedi — Smuggler's Bounty Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-black.jpg", boxImg:"https://i.ebayimg.com/images/g/6UkAAeSwCr9qHPwR/s-l1600.jpg"},
   {num:"157", name:"Darth Vader (Red Chrome)", theme:"Return of the Jedi — Target Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-red.jpg", boxImg:"https://i.ebayimg.com/images/g/1qAAAOSwJmhmbhsB/s-l1600.jpg"},
   {num:"157", name:"Darth Vader (Blue Chrome)", theme:"Return of the Jedi — 2019 Star Wars Celebration Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-blue.jpg", boxImg:"https://i.ebayimg.com/images/g/VqoAAOSwTi9ieuXm/s-l1600.jpg"},
-  {num:"157", name:"Darth Vader (Gold Chrome)", theme:"Return of the Jedi — 2019 Galactic Convention Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-gold.jpg", boxImg:"https://i.ebayimg.com/images/g/URAAAOSwI4teSX1n/s-l1600.jpg"},
+  {num:"157", name:"Darth Vader (Gold Chrome)", theme:"Return of the Jedi — 2019 Galactic Convention Exclusive", img:"157-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-gold.jpg", boxImg:"https://i.ebayimg.com/images/g/URAAAOSwI4teSX1n/s-l1600.jpg", value:"$17.51"},
   {num:"158", name:"Darth Vader (Bespin)", theme:"Star Wars — Smuggler's Bounty Exclusive", override:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg", boxImg:"https://i.ebayimg.com/images/g/slAAAeSwwflqHfO5/s-l1600.jpg"},
   {num:"176", name:"Darth Vader in TIE Fighter", theme:"Force Awakens — Target Exclusive", img:"176-funko-pop-figure-star-wars-episode-vii-the-force-awakens-darth-vader-in-tie-fighter.jpg", boxImg:"https://i.ebayimg.com/images/g/a-oAAOSwSP5k0nDH/s-l1600.jpg"},
   {num:"225", name:"Death Star Duel (Darth Vader & Obi-Wan Kenobi)", theme:"Movie Moments — Walmart Exclusive", override:"https://pops.today/images/POP_STAR_WARS/Star+Wars+225.webp", boxImg:"https://pops.today/images/POP_STAR_WARS/Star+Wars+225+Box.webp"},
   {num:"226", name:"Cloud City Duel (Darth Vader & Luke Skywalker)", theme:"Movie Moments — Walgreens Exclusive", override:"https://pops.today/images/POP_STAR_WARS/Star+Wars+226.webp", boxImg:"https://pops.today/images/POP_STAR_WARS/Star+Wars+226+Box.webp"},
   {num:"279", name:"Darth Vader w/ Candy Cane (Chase)", theme:"Holiday — Walgreens Exclusive", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane-chase-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/r68AAOSw25VnQfff/s-l1600.jpg"},
-  {num:"279", name:"Darth Vader w/ Candy Cane", theme:"Holiday", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane.jpg", boxImg:"https://i.ebayimg.com/images/g/kUUAAOSwyz5nUJRD/s-l1600.png"},
+  {num:"279", name:"Darth Vader w/ Candy Cane", theme:"Holiday", img:"279-funko-pop-figure-star-wars-holiday-darth-vader-with-candy-cane.jpg", boxImg:"https://i.ebayimg.com/images/g/kUUAAOSwyz5nUJRD/s-l1600.png", value:"$11.84"},
   {num:"288", name:"Darth Vader Electrocuted", theme:"Return of the Jedi — Target Exclusive", img:"288-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-electrocuted-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/znEAAOSwf-dg~dgT/s-l1600.jpg"},
   {num:"288", name:"Darth Vader Electrocuted", theme:"Return of the Jedi", img:"288-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-electrocuted.jpg", boxImg:"https://i.ebayimg.com/images/g/XOwAAOSwF-tgRaqH/s-l1600.jpg"},
-  {num:"343", name:"Darth Vader (Lights & Sound)", theme:"From the Vault", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw4e2ecc85/images/funko/35519-1.png?sw=800&sh=800", boxImg:"https://i.ebayimg.com/images/g/-vwAAOSw~55k5N4u/s-l1600.jpg"},
-  {num:"365", name:"Darth Vader in Meditation Chamber", theme:"Empire Strikes Back", img:"365-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-in-meditation-chamber.jpg", boxImg:"https://i.ebayimg.com/images/g/MC4AAOSwWoNlYP-w/s-l1600.jpg"},
+  {num:"343", name:"Darth Vader (Lights & Sound)", theme:"From the Vault", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw4e2ecc85/images/funko/35519-1.png?sw=800&sh=800", boxImg:"https://i.ebayimg.com/images/g/-vwAAOSw~55k5N4u/s-l1600.jpg", value:"$14.04"},
+  {num:"365", name:"Darth Vader in Meditation Chamber", theme:"Empire Strikes Back", img:"365-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-in-meditation-chamber.jpg", boxImg:"https://i.ebayimg.com/images/g/MC4AAOSwWoNlYP-w/s-l1600.jpg", value:"$9.50"},
   {num:"377", name:"Darth Vader & Snowtrooper", theme:"Battle at Echo Base — Amazon Exclusive", img:"377-funko-pop-figure-star-wars-battle-at-echo-base-darth-vader-snowtrooper.jpg", boxImg:"https://i.ebayimg.com/images/g/GlsAAOSwQk5m8dFi/s-l1600.png"},
   {num:"389", name:"Darth Vader", theme:"Concept Series — Galactic Convention Exclusive", img:"389-funko-pop-figure-star-wars-concept-series-darth%20vader.jpg", boxImg:"https://i.ebayimg.com/images/g/OqUAAOSwBORlT7vI/s-l1600.jpg"},
   {num:"417", name:"Darth Vader (Pink)", theme:"Valentine's Day", img:"417-funko-pop-figure-star-wars-valentine-s-day-darth-vader-pink.jpg", boxImg:"https://i.ebayimg.com/images/g/CqgAAOSwPilh4ORS/s-l1600.jpg"},
   {num:"426", name:"Darth Vader", theme:"Concept Series — Disney Exclusive", img:"426-funko-pop-figure-star-wars-concept-series-darth%20vader.jpg", boxImg:"https://i.ebayimg.com/images/g/ZfgAAOSwymhgRX3q/s-l1600.jpg"},
   {num:"428", name:"Darth Vader (Fist Pose)", theme:"Empire Strikes Back — FunkoShop / Popcultcha Exclusive", img:"428-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/LPkAAeSwunVqQTvg/s-l1600.jpg"},
-  {num:"442", name:"Darth Vader", theme:"Bounty Hunters — GameStop Exclusive", img:"442-funko-pop-figure-star-wars-bounty-hunters-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/Kx0AAeSwFatqOY8Z/s-l1600.jpg"},
-  {num:"456", name:"Darth Vader", theme:"Retro Series — Target Exclusive", img:"456-funko-pop-figure-star-wars-retro-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/R9oAAOSwcqBj-8XV/s-l1600.jpg"},
+  {num:"442", name:"Darth Vader", theme:"Bounty Hunters — GameStop Exclusive", img:"442-funko-pop-figure-star-wars-bounty-hunters-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/Kx0AAeSwFatqOY8Z/s-l1600.jpg", value:"$8.75"},
+  {num:"456", name:"Darth Vader", theme:"Retro Series — Target Exclusive", img:"456-funko-pop-figure-star-wars-retro-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/R9oAAOSwcqBj-8XV/s-l1600.jpg", value:"$11.40"},
   {num:"509", name:"Darth Vader", theme:"Phantom Menace — 2022 Star Wars Celebration Exclusive", img:"509-funko-pop-figure-star-wars-episode-i-the-phantom-menace-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/LJEAAOSw7jJnlX0z/s-l1600.jpg"},
-  {num:"515", name:"Darth Vader (Mustafar)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-lava.jpg", boxImg:"https://i.ebayimg.com/images/g/nosAAOSwuQVkfgno/s-l1600.jpg"},
-  {num:"516", name:"Darth Vader (Hoth)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-ice.jpg", boxImg:"https://i.ebayimg.com/images/g/kf0AAOSwWR5i980D/s-l1600.jpg"},
-  {num:"517", name:"Darth Vader (Endor)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-wood.jpg", boxImg:"https://i.ebayimg.com/images/g/WtAAAOSwwdtmtk-N/s-l1600.jpg"},
-  {num:"518", name:"Darth Vader (Bespin)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-rays.jpg", boxImg:"https://i.ebayimg.com/images/g/X~kAAOSwaphnNDgb/s-l1600.png"},
+  {num:"515", name:"Darth Vader (Mustafar)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-lava.jpg", boxImg:"https://i.ebayimg.com/images/g/nosAAOSwuQVkfgno/s-l1600.jpg", value:"$20.50"},
+  {num:"516", name:"Darth Vader (Hoth)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-ice.jpg", boxImg:"https://i.ebayimg.com/images/g/kf0AAOSwWR5i980D/s-l1600.jpg", value:"$17.80"},
+  {num:"517", name:"Darth Vader (Endor)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-wood.jpg", boxImg:"https://i.ebayimg.com/images/g/WtAAAOSwwdtmtk-N/s-l1600.jpg", value:"$10.42"},
+  {num:"518", name:"Darth Vader (Bespin)", theme:"Artist Series — Walmart Exclusive", img:"0-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-rays.jpg", boxImg:"https://i.ebayimg.com/images/g/X~kAAOSwaphnNDgb/s-l1600.png", value:"$15.99"},
   {num:"523", name:"Red Saber Series Vol.1: Darth Vader", theme:"Revenge of the Sith — GameStop Exclusive", img:"523-funko-pop-figure-star-wars-episode-iii-revenge-of-the-sith-red-saber-series-volume-1-darth-vader-glow-in-the-dark.jpg", glow:true, boxImg:"https://i.ebayimg.com/images/g/7BkAAOSwCzZkGJ7u/s-l1600.jpg"},
   {num:"524", name:"Darth Vader", theme:"Concept Series — 2022 Star Wars Celebration Exclusive", img:"524-funko-pop-figure-star-wars-concept-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/5PAAAOSwOWZmMW3C/s-l1600.jpg"},
   {num:"535", name:"Darth Vader", theme:"Artist Series — Target Exclusive", img:"535-funko-pop-figure-star-wars-artist-series-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/wKAAAOSwRXpni9tS/s-l1600.png"},
   {num:"539", name:"Darth Vader", theme:"Obi-Wan Kenobi", img:"539-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/lxgAAeSwN6posx-O/s-l1600.jpg"},
   {num:"543", name:"Darth Vader", theme:"Obi-Wan Kenobi — GameStop Exclusive", img:"543-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader.jpg", boxImg:"https://i.ebayimg.com/images/g/TsUAAeSwjiVqEzDj/s-l1600.jpg"},
   {num:"556", name:"Darth Vader Snowman", theme:"Holiday", img:"556-funko-pop-figure-star-wars-holiday-darth-vader-snowman.jpg"},
-  {num:"569", name:"Darth Vader (Supersized 18\")", theme:"Empire Strikes Back — Funko Shop Exclusive", img:"569-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-supersized-18-.jpg"},
-  {num:"574", name:"Darth Vader (Lights & Sound, 10\")", theme:"From the Vault — Funko Shop Exclusive", img:"574-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
-  {num:"597", name:"Darth Vader", theme:"A New Hope", img:"597-funko-pop-figure-star-wars-episode-iv-new-hope-darth-vader.jpg"},
+  {num:"569", name:"Darth Vader (Supersized 18\")", theme:"Empire Strikes Back — Funko Shop Exclusive", img:"569-funko-pop-figure-star-wars-episode-v-empire-strikes-back-darth-vader-supersized-18-.jpg", value:"$144.50"},
+  {num:"574", name:"Darth Vader (Lights & Sound, 10\")", theme:"From the Vault — Funko Shop Exclusive", img:"574-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg", value:"$64.32"},
+  {num:"597", name:"Darth Vader", theme:"A New Hope", img:"597-funko-pop-figure-star-wars-episode-iv-new-hope-darth-vader.jpg", value:"$11.00"},
   {num:"600", name:"Darth Vader (Facet)", theme:"Disney 100 — Funko Shop Exclusive", img:"600-funko-pop-figure-disney-100-darth-vader-facet.jpg"},
-  {num:"610", name:"Darth Vader Unmasked", theme:"Return of the Jedi (40th)", img:"610-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-unmasked.jpg"},
+  {num:"610", name:"Darth Vader Unmasked", theme:"Return of the Jedi (40th)", img:"610-funko-pop-figure-star-wars-episode-vi-return-of-the-jedi-darth-vader-unmasked.jpg", value:"$4.17"},
   {num:"626", name:"Darth Vader (Diamond Collection)", theme:"Star Wars — Funko Hollywood Exclusive", override:"https://www.topshoptoys.com/cdn/shop/files/0D66F906-656F-477C-81FD-1A3FA2D3731F.jpg?v=1780234388"},
   {num:"637", name:"Darth Vader with Damaged Helmet", theme:"Obi-Wan Kenobi — Walmart Exclusive", img:"637-funko-pop-figure-star-wars-obi-wan-kenobi-darth-vader-with-damaged-helmet.jpg"},
   {num:"710", name:"Darth Vader (Hallway Rampage)", theme:"Rogue One — 2024 Summer Convention/SDCC Shared Exclusive", override:"https://i.ebayimg.com/images/g/5UUAAeSwsXNqRXJP/s-l1600.jpg"},
   {num:"727", name:"Darth Vader (Halloween Light-Up)", theme:"Halloween — Super Sized 6.85\"", override:"https://funko.com/on/demandware.static/-/Sites-funko-master-catalog/default/dw2c102ec6/images/funko/upload/79918_StarWars_VaderSFX_POP-SUPER_GLAM-WEB.png"},
-  {num:"775", name:"Darth Vader (Samurai)", theme:"Star Wars Impressions — Funko Exclusive", img:"775-funko-pop-figure-star-wars-artist-series-darth-vader-samurai.jpg"},
+  {num:"775", name:"Darth Vader (Samurai)", theme:"Star Wars Impressions — Funko Exclusive", img:"775-funko-pop-figure-star-wars-artist-series-darth-vader-samurai.jpg", value:"$165.05"},
   {num:"795", name:"Darth Vader (Lights & Sound)", theme:"Retro Series — Web Exclusive, Sept 2025", img:"795-funko-pop-figure-star-wars-episode-ix-the-rise-of-skywalker-darth-vader-lights-sound.jpg"},
   {num:"836", name:"Darth Vader (Infinities)", theme:"Star Wars Legends — Retailer Exclusive, White Armor", override:"https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dwddbc3979/images/funko/upload/1/90873_POP_SW_Legends_Darth-Vader(WH)_GLAM-WEB.png?sw=800&sh=800"},
-  {num:"N/A", name:"Darth Vader & Luke Skywalker (Metallic 2-Pack)", theme:"D23 2024 Expo Exclusive — no assigned box number", override:"https://i.ebayimg.com/images/g/jYoAAOSwtIlnPKQ1/s-l1600.jpg"}
+  {num:"N/A", name:"Darth Vader & Luke Skywalker (Metallic 2-Pack)", theme:"D23 2024 Expo Exclusive — no assigned box number", override:"https://i.ebayimg.com/images/g/jYoAAOSwtIlnPKQ1/s-l1600.jpg", value:"$27.99"}
 ];
 
 const IMG_BASE = "https://wsrv.nl/?url=pop-figures.com/media/img/figurine/";
@@ -296,6 +298,7 @@ items.forEach((it, i) => {
       <span class="seq">${i+1}.</span><span class="popnum">#${it.num}</span>
       <span class="popname">${it.name}${hasGlow(it) ? glowTag() : ''}</span>
       <span class="poptheme">${it.theme}</span>
+      ${it.value ? `<span class="popvalue">Est. value: ${it.value}</span>` : ''}
     </div>
     ${thumbHtml}
   `;
